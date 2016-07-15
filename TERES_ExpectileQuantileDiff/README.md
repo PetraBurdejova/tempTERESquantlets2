@@ -19,7 +19,7 @@ Author : Philipp Gschöpf, Andrija Mihoci
 Submitted : Thu, June 11 2015 by Lukas Borke
 
 ```
-
+![Picture1](TERES_ExpectileQuantileDiff.png)
 
 ### R Code:
 ```r
