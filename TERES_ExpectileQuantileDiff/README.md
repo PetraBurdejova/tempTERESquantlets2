@@ -8,14 +8,13 @@ Name of QuantLet : TERES_ExpectileQuantileDiff
 
 Published in : Tail Event Risk Expected Shortfall
 
-Description : 'Calculates the expectile value which is equal to 
+Description : Calculates the expectile value which is equal to 
 the quantile for all risk levels under a special distribution 
-and compares the expectile vs. quantile in plots.'
+and compares the expectile vs. quantile in plots.
 
-Keywords : 'expectile, heavy-tailed, quantile, risk, risk management, risk measure, tail'
+Keywords : expectile, heavy-tailed, quantile, risk, risk management, risk measure, tail
 
-See also : MSEconfexpectile0.95, SFSconfexpectile0.95, SFSconfexpectile0.95, 
-TERES_ExpectileQuantileDiffMulti
+See also : MSEconfexpectile0.95, SFSconfexpectile0.95, SFSconfexpectile0.95, TERES_ExpectileQuantileDiffMulti
 
 Author : Philipp Gschöpf, Andrija Mihoci
 
