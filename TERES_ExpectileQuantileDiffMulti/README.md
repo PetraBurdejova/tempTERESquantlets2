@@ -1,28 +1,25 @@
 [<img src="https://github.com/QuantLet/Styleguide-and-FAQ/blob/master/pictures/banner.png" width="880" alt="Visit QuantNet">](http://quantlet.de/index.php?p=info)
 
-## [<img src="https://github.com/QuantLet/Styleguide-and-Validation-procedure/blob/master/pictures/qloqo.png" alt="Visit QuantNet">](http://quantlet.de/) **TERES_ExpectileQuantileDiff** [<img src="https://github.com/QuantLet/Styleguide-and-Validation-procedure/blob/master/pictures/QN2.png" width="60" alt="Visit QuantNet 2.0">](http://quantlet.de/d3/ia)
+## [<img src="https://github.com/QuantLet/Styleguide-and-Validation-procedure/blob/master/pictures/qloqo.png" alt="Visit QuantNet">](http://quantlet.de/) **TERES_ExpectileQuantileDiffMulti ** [<img src="https://github.com/QuantLet/Styleguide-and-Validation-procedure/blob/master/pictures/QN2.png" width="60" alt="Visit QuantNet 2.0">](http://quantlet.de/d3/ia)
 
 ```yaml
 
-Name of QuantLet : TERES_ExpectileQuantileDiff
+Name of QuantLet : TERES_ExpectileQuantileDiffMulti 
 
 Published in : Tail Event Risk Expected Shortfall
 
-Description : 'Calculates the expectile value which is equal to 
-the quantile for all risk levels under a special distribution 
-and compares the expectile vs. quantile in plots.'
+Description : 'Calculates and compares the expectile and quantile functions for all risk levels under different distribution.'
 
-Keywords : expectile, heavy-tailed, quantile, risk, risk management, risk measure, tail
+Keywords : expected shortfall, expectile, heavy-tailed, quantile, risk, risk management, risk measure, tail
 
-See also : 'MSEconfexpectile0.95, SFSconfexpectile0.95, SFSconfexpectile0.95, 
-TERES_ExpectileQuantileDiffMulti'
+See also : 'MSEconfexpectile0.95, SFSconfexpectile0.95, SFSconfexpectile0.95, TERES_ExpectileQuantileDiff'
 
-Author : Philipp Gschöpf, Andrija Mihoci
+Author : Philipp Gschöpf, Andrija Mihoci, Shi Chen, Lukas Borke
 
-Submitted : Thu, June 11 2015 by Lukas Borke
+Submitted : Fri, June 12 2015 by Lukas Borke
 
 ```
-![Picture1](TERES_ExpectileQuantileDiff.png)
+![Picture1](TERES_ExpectileQuantileDiffMulti.png)
 
 ### R Code:
 ```r
@@ -31,14 +28,15 @@ rm(list = ls(all = TRUE))
 graphics.off()
 
 # Load required packages
-libraries = c("numDeriv")
+libraries = c("numDeriv", "VGAM")
 lapply(libraries, function(x) if (!(x %in% installed.packages())) {
   install.packages(x)
 })
 lapply(libraries, library, quietly = TRUE, character.only = TRUE)
 
-# The distribution such that the expectile equals the quantile
-Fdist = function(x) {
+# Define different distributions for comparison of quantiles and expectiles
+# Fdist1: the distribution such that the expectile equals the quantile
+Fdist1 = function(x) {
   if (x < 0) {
     0.5 * (1 - (1 - 4/(4 + x^2))^0.5)
   } else {
@@ -46,9 +44,21 @@ Fdist = function(x) {
   }
 }
 
-F = function(x) {
+# Fdist2: normal distribution
+Fdist2 = function(x) {
+  pnorm(x)
+}
+
+# Fdist2: Laplace distribution
+Fdist3 = function(x) {
+  plaplace(x)
+}
+
+# Select different distributions (Fdist1, Fdist2 or Fdist3) as input
+F = function(x, Fdist=Fdist1) {
   sapply(x, Fdist)
 }
+
 f = function(x) {
   grad(F, x)
 }
@@ -103,6 +113,7 @@ e = function(alpha) {
 }
 
 alphas = seq(0.01, 0.99, 0.01)
+#alphas[86] = 0.859		#additional assumption for laplace distribution
 quant  = c(sapply(alphas, q_func))
 expect = c(sapply(alphas, e))
 diff   = (quant - expect)
